@@ -221,6 +221,54 @@
           </div>
         </section>
 
+        <!-- S.H.I.E.L.D. Secure Social Channels & Image Map (Topics: <map>, <area>, mouse over) you can add this (<code class="text-sm text-amber-400">&lt;map&gt; &amp; &lt;area&gt;</code>) at h2-->
+        <section class="bg-slate-900/60 p-6 sm:p-8 rounded-3xl border border-slate-800 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-blue-500/10 text-blue-400 border border-blue-500/20">Global Communications</span>
+              <h2 class="text-3xl font-display tracking-wider text-white mt-2">S.H.I.E.L.D. Social Network Hub </h2> 
+              <p class="text-slate-400 text-xs mt-1">Hover over the secure network quadrants to inspect tactical feeds and frequencies.</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center bg-slate-950 p-6 rounded-2xl border border-slate-800">
+            
+            <!-- Interactive Social Network Image with Map Area -->
+            <div class="flex justify-center relative">
+              <img src="c:\Users\Joseph\Downloads\6288da73-485b-4209-8d0d-7986692cf92d.jfif" 
+                   alt="Social Media Hub" 
+                   usemap="#socialmap" 
+                   class="rounded-2xl max-h-80 object-cover border border-slate-800 shadow-2xl hover:brightness-110 transition-all cursor-crosshair" />
+              
+              <map name="socialmap">
+                <!-- 1. Top-Left: Secure Feed / Twitter-X -->
+                <area shape="rect" coords="0,0,150,150" href="#X/Twitter" alt="Secure Feed" onmouseover="showSocialInfo('Secure Feed (X / Twitter): Live updates from Avengers compound at 98.4% uptime.')" onclick="showSocialInfo('Secure Feed (X / Twitter): Live updates from Avengers compound at 98.4% uptime.')" title="Secure Feed">
+                
+                <!-- 2. Top-Right: Intel Broadcast / YouTube -->
+                <area shape="rect" coords="150,150,300,300" href="#Youtube" alt="Intel Broadcast" onmouseover="showSocialInfo('Intel Broadcast (YouTube): Streaming weekly briefing reels and mission debriefs.')" onclick="showSocialInfo('Intel Broadcast (YouTube): Streaming weekly briefing reels and mission debriefs.')" title="Intel Broadcast">
+                
+                <!-- 3. Bottom-Left: Encrypted Comm / Discord -->
+                <area shape="rect" coords="150,0,300,150" href="#Discord" alt="Encrypted Comm" onmouseover="showSocialInfo('Encrypted Voice Channel (Discord): 4,210 active agents online.')" onclick="showSocialInfo('Encrypted Voice Channel (Discord): 4,210 active agents online.')" title="Encrypted Comm">
+                
+                <!-- 4. Bottom-Right: Tech Repository / GitHub-->
+                 <area shape="rect" coords="0,150,150,300" href="#Github" alt="Tech Repository" onmouseover="showSocialInfo('Stark Repository (GitHub): Latest JARVIS source code commits verified.')" onclick="showSocialInfo('Stark Repository (GitHub): Latest JARVIS source code commits verified.')" title="Tech Repository">
+              </map>
+            </div>
+
+            <!-- Social Diagnostic Display Panel (Mouse Over Target) -->
+            <div class="space-y-4">
+              <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                <h4 class="text-xs font-bold uppercase text-blue-400 flex items-center gap-2">
+                  <i class="fa-solid fa-satellite-dish"></i> Channel Telemetry Status
+                </h4>
+                <p id="blueprint-status-text" class="text-xs text-slate-300 font-mono">
+                  Hover over the 4 quadrants on the network image to view channel diagnostics...
+                </p>
+              </div>
+              
+          </div>
+        </section>
+
         <!-- Catalog / Drop Pool -->
         <section class="space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -482,7 +530,7 @@ READY FOR DECRYPTION...</code></pre>
             <p class="text-xs text-slate-400">Watch standard issue decryption instructions.</p>
             <div class="rounded-xl overflow-hidden border border-slate-800 bg-slate-950 aspect-video flex items-center justify-center">
               <video controls class="w-full h-full object-cover">
-                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+                <source src="Video.mp4" type="Video/mp4">
                 Your browser does not support the video tag.
               </video>
             </div>

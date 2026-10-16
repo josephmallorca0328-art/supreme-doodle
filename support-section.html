@@ -1,0 +1,101 @@
+<section id="section-support-content" class="space-y-8 hidden">
+  <div>
+    <h2 class="text-4xl font-display tracking-wider text-white">S.H.I.E.L.D. Support Desk</h2>
+    <p class="text-slate-400 text-xs mt-1">
+      Having trouble with crate decryption or delivery? Send a dispatch to Stark Industries agent team.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <form onsubmit="handleSupportSubmit(event)" class="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-4">
+      <div>
+        <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Agent Name</label>
+        <input type="text" required placeholder="e.g. Tony Stark" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500" />
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Clearance ID / Email</label>
+        <input type="email" required placeholder="agent@shield.gov" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500" />
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Issue Description</label>
+        <textarea rows="4" required placeholder="Describe your unboxing or item issue..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500"></textarea>
+      </div>
+
+      <div class="space-y-2">
+        <label class="block text-xs font-bold text-slate-300 uppercase">
+          Upload Mission Evidence
+        </label>
+        <input type="file" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-red-600 file:text-white hover:file:bg-red-500 cursor-pointer bg-slate-950 border border-slate-800 rounded-xl" />
+      </div>
+
+      <button type="submit" class="w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-red-600 hover:bg-red-500 transition-all shadow-lg shadow-red-600/30">
+        Transmit Dispatch
+      </button>
+    </form>
+
+    <div class="space-y-4">
+      <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+        <h4 class="text-sm font-bold text-amber-400 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question"></i> How are drop rates determined?
+        </h4>
+        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          All drops are governed by provably fair quantum algorithms verified by JARVIS subroutines.
+        </p>
+      </div>
+      <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+        <h4 class="text-sm font-bold text-amber-400 flex items-center gap-2">
+          <i class="fa-solid fa-truck-fast"></i> How does physical item shipping work?
+        </h4>
+        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          Items collected in your inventory are dispatched straight from Wakandan/Stark logistics within 3-5 operational days.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+    <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800 space-y-3">
+      <h3 class="text-lg font-display tracking-wider text-white flex items-center gap-2">
+        <i class="fa-solid fa-video text-red-500 text-xs"></i> Security Briefing 
+      </h3>
+      <p class="text-xs text-slate-400">Watch standard issue decryption instructions.</p>
+      <div class="rounded-xl overflow-hidden border border-slate-800 bg-slate-950 aspect-video flex items-center justify-center">
+        <video controls class="w-full h-full object-cover">
+          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+
+    <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800 space-y-3">
+      <h3 class="text-lg font-display tracking-wider text-white flex items-center gap-2">
+        <i class="fa-solid fa-microphone-lines text-amber-500 text-xs"></i> Radio Frequency
+      </h3>
+      <p class="text-xs text-slate-400">Listen to emergency broadcast transmissions.</p>
+      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col justify-center items-center space-y-3">
+        <i class="fa-solid fa-wave-square text-amber-400 text-2xl animate-pulse"></i>
+        <audio controls class="w-full h-8">
+          <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </div>
+
+    <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800 space-y-3">
+      <h3 class="text-lg font-display tracking-wider text-white flex items-center gap-2">
+        <i class="fa-solid fa-map-location-dot text-blue-500 text-xs"></i> Compound Map
+      </h3>
+      <p class="text-xs text-slate-400">Locate regional S.H.I.E.L.D. facility coordinates.</p>
+      <div class="rounded-xl overflow-hidden border border-slate-800 bg-slate-950 aspect-video">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387190.2799160891!2d-74.25987568486931!3d40.69767006788206!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sph!4v1650000000000!5m2!1sen!2sph" 
+          width="100%" 
+          height="100%" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="en" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avengers Vault — Assemble Your Gear</title>
+
+    <!-- External Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              avengers: {
+                red: "#e23636",
+                gold: "#f59e0b",
+                blue: "#0284c7",
+                dark: "#0b0f19",
+              },
+              rarity: {
+                common: "#9ca3af",
+                rare: "#3b82f6",
+                epic: "#a855f7",
+                legendary: "#f59e0b",
+                mythic: "#ec4899",
+              },
+            },
+            fontFamily: {
+              sans: ["Space Grotesk", "sans-serif"],
+              display: ["Bebas Neue", "sans-serif"],
+            },
+            animation: {
+              "pulse-glow": "pulseGlow 3s ease-in-out infinite",
+              shake: "shake 0.5s cubic-bezier(.36,.07,.19,.97) infinite",
+              float: "float 4s ease-in-out infinite",
+              ticker: "ticker 30s linear infinite",
+            },
+            keyframes: {
+              pulseGlow: {
+                "0%, 100%": { opacity: "0.4", transform: "scale(1)" },
+                "50%": { opacity: "0.8", transform: "scale(1.08)" },
+              },
+              shake: {
+                "10%, 90%": { transform: "translate3d(-2px, 0, 0) rotate(-2deg)" },
+                "20%, 80%": { transform: "translate3d(3px, 0, 0) rotate(3deg)" },
+                "30%, 50%, 70%": { transform: "translate3d(-5px, 0, 0) rotate(-4deg)" },
+                "40%, 60%": { transform: "translate3d(5px, 0, 0) rotate(4deg)" },
+              },
+              float: {
+                "0%, 100%": { transform: "translateY(0px)" },
+                "50%": { transform: "translateY(-12px)" },
+              },
+              ticker: {
+                "0%": { transform: "translateX(0)" },
+                "100%": { transform: "translateX(-50%)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+    <!-- Accessibility Skip Link (Topic: skip) -->
+    <a href="#section-home-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-red-600 focus:text-white">
+      Skip to main content
+    </a>
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-red-900/40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        
+        <!-- Logo -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="switchNav('home')">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-red-600/40 font-display text-2xl tracking-widest border border-amber-400/40">
+            A
+          </div>
+          <span class="text-2xl font-display tracking-wider text-white">
+            AVENGERS<span class="text-red-500">VAULT</span>
+          </span>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide">
+          <button onclick="switchNav('home')" id="nav-home" class="nav-link text-red-500 transition-colors flex items-center gap-2">
+            <i class="fa-solid fa-house text-xs"></i> Home
+          </button>
+          <button onclick="switchNav('about')" id="nav-about" class="nav-link text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved text-xs"></i> About Us
+          </button>
+          <button onclick="switchNav('support')" id="nav-support" class="nav-link text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <i class="fa-solid fa-headset text-xs"></i> S.H.I.E.L.D Support
+          </button>
+        </nav>
+
+        <!-- Right Side Controls (SFX, Balance, Top Up, Account) -->
+        <div class="flex items-center gap-3 sm:gap-4">
+          <button
+            id="sound-toggle"
+            onclick="toggleSound()"
+            class="px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900/70 hover:bg-slate-800 text-xs text-slate-300 flex items-center gap-2 transition-all"
+          >
+            <i id="sound-icon" class="fa-solid fa-volume-high text-red-500"></i>
+            <span class="hidden sm:inline">SFX On</span>
+          </button>
+
+          <!-- Balance Display & Top-Up Button -->
+          <div class="flex items-center gap-2">
+            <div class="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-800">
+              <i class="fa-solid fa-shield-halved text-amber-400 text-xs"></i>
+              <span class="text-xs text-slate-400">Balance:</span>
+              <span class="text-xs font-bold text-amber-400" id="user-balance-display">$500.00</span>
+            </div>
+            <button
+              onclick="openTopUpModal()"
+              class="px-3 py-1.5 rounded-xl bg-green-600 hover:bg-green-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-green-600/30 flex items-center gap-1.5"
+            >
+              <i class="fa-solid fa-plus text-[10px]"></i>
+              <span>Top Up</span>
+            </button>
+          </div>
+
+          <!-- Account Trigger Button (Updated with Avatar Preview) -->
+          <button
+            onclick="openAccountModal()"
+            class="px-3.5 py-1.5 rounded-xl border border-red-500/40 bg-red-950/30 hover:bg-red-900/50 text-xs font-bold text-white flex items-center gap-2 transition-all shadow-md shadow-red-950/50"
+          >
+            <div id="nav-avatar-container" class="w-6 h-6 rounded-full overflow-hidden bg-red-900 flex items-center justify-center border border-red-400">
+              <img id="nav-avatar-img" src="" alt="Avatar" class="w-full h-full object-cover hidden" />
+              <i id="nav-avatar-icon" class="fa-solid fa-user-astronaut text-[10px] text-red-300"></i>
+            </div>
+            <span id="nav-account-label">Agent Stark</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Live Unboxing Ticker Banner -->
+    <div class="bg-slate-950 border-b border-slate-800 py-2.5 overflow-hidden relative">
+      <div class="max-w-7xl mx-auto px-4 flex items-center gap-3">
+        <span class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-red-400 bg-red-950/50 px-2.5 py-1 rounded-md border border-red-500/30 whitespace-nowrap z-10">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+          Live Intel Drop
+        </span>
+        <div class="overflow-hidden w-full relative">
+          <div id="live-ticker-content" class="inline-flex gap-6 whitespace-nowrap animate-ticker text-xs text-slate-400">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16 flex-grow">
+      
+      <!-- HERO & MAIN CRATES SECTION -->
+      <div id="section-home-content" class="space-y-16">
+        <!-- Hero Section -->
+        <section class="relative rounded-3xl p-8 sm:p-12 overflow-hidden border border-red-900/30 bg-gradient-to-r from-slate-900 via-slate-950 to-red-950/40">
+          <div class="absolute -right-20 -top-20 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="max-w-2xl space-y-6 relative z-10">
+            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-red-500/10 text-red-400 border border-red-500/20">
+              S.H.I.E.L.D. Approved Protocol
+            </span>
+            <h1 class="text-4xl sm:text-6xl font-display tracking-wide text-white leading-tight">
+              Assemble Your Ultimate <br />
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-amber-400 to-sky-400">
+                Avenger Arsenal
+              </span>
+            </h1>
+            <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
+              Decrypt high-tech crates from Stark Tech, Asgardian relics, Wakandan vibranium, and Cosmic artifacts.
+            </p>
+            <div class="pt-2 flex flex-wrap items-center gap-4">
+              <a
+                href="#boxes"
+                class="px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-red-600 hover:bg-red-500 shadow-lg shadow-red-600/30 transition-all"
+              >
+                Unlock Crates
+              </a>
+              <button
+                onclick="quickDemoUnbox()"
+                class="px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 border border-slate-700 transition-all flex items-center gap-2"
+              >
+                <i class="fa-solid fa-bolt text-amber-400"></i> Demo Unbox
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mystery Box Tiers Grid -->
+        <section id="boxes" class="space-y-6">
+          <div>
+            <h2 class="text-3xl font-display tracking-wider text-white">Select Crate Protocol</h2>
+            <p class="text-slate-400 text-xs mt-1">
+              Guaranteed high-tier hero loot in every deployed crate.
+            </p>
+          </div>
+
+          <div id="tiers-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Rendered dynamically via JS -->
+          </div>
+        </section>
+
+        <!-- Catalog / Drop Pool -->
+        <section class="space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-3xl font-display tracking-wider text-white">Armory Drop Pool</h2>
+              <p class="text-slate-400 text-xs mt-1">
+                Browse weapons, suits, and relics available inside active crates.
+              </p>
+            </div>
+
+            <!-- Catalog Filter Buttons & Datalist Search -->
+            <div class="flex flex-wrap items-center gap-2">
+              
+              <!-- Search Input with Datalist (Topics: <input type>, <datalist>) -->
+              <div class="relative">
+                <input type="text" id="catalog-search-input" list="armory-suggestions" placeholder="Search armory gear..." oninput="handleCatalogSearch(this.value)" class="px-3 py-1.5 rounded-lg text-xs bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-red-500" />
+                <datalist id="armory-suggestions">
+                  <option value="Custom RGB Mechanical Keyboard">
+                  <option value="Wireless ANC Gaming Headset">
+                  <option value="Ergonomic Ultra-Light Gaming Mouse">
+                  <option value="4K High-Refresh Gaming Monitor">
+                  <option value="Over-Sized Streetwear Tech Hoodie">
+                  <option value="Limited Edition Retro Sneakers">
+                  <option value="Waterproof Anti-Theft Laptop Backpack">
+                  <option value="Digital Stylus Drawing & Note Tablet">
+                </datalist>
+              </div>
+
+              <button onclick="filterCatalog('all', event)" class="catalog-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-600 text-white transition-all">
+                All Items
+              </button>
+              <button onclick="filterCatalog('stark', event)" class="catalog-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-400 hover:text-white transition-all">
+                Stark Tech
+              </button>
+              <button onclick="filterCatalog('asgard', event)" class="catalog-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-400 hover:text-white transition-all">
+                Asgardian
+              </button>
+              <button onclick="filterCatalog('wakanda', event)" class="catalog-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-400 hover:text-white transition-all">
+                Wakanda
+              </button>
+              <button onclick="filterCatalog('cosmic', event)" class="catalog-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-400 hover:text-white transition-all">
+                Cosmic
+              </button>
+            </div>
+          </div>
+
+          <div id="catalog-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <!-- Rendered dynamically via JS -->
+          </div>
+        </section>
+      </div>
+
+      <!-- ABOUT US SECTION -->
+      <section id="section-about-content" class="space-y-12 hidden">
+        <div class="text-center max-w-3xl mx-auto space-y-4">
+          <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-red-500/10 text-red-400 border border-red-500/20">
+            S.H.I.E.L.D. Authorized Archive
+          </span>
+          <h2 class="text-4xl font-display tracking-wider text-white">About Avengers Vault</h2>
+          
+          <!-- Ruby & Text Formatting Example -->
+          <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800 text-xs text-slate-300 space-y-2 inline-block text-left mt-2">
+            <p>
+              Status: <del class="text-slate-500">Deprecated Protocol v1</del> <em class="text-green-400 not-italic font-bold">Active Protocol v2</em>
+            </p>
+            <p>
+              Codenamed: 
+              <ruby class="text-amber-400 font-bold ml-1">
+                Stark<rt class="text-[9px] text-slate-400">Armory Core</rt>
+              </ruby>
+            </p>
+          </div>
+
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Avengers Vault is Earth's premier tactical armory deployment system. Operated in direct collaboration with Stark Industries, Wakandan Royal Logistics, and the Strategic Homeland Intervention, Enforcement and Logistics Division.
+          </p>
+        </div>
+
+        <!-- S.H.I.E.L.D. Training & Operations Manual (Topics: <ol>, <ul>, <pre>, <dl>) pede mo idagdag (<code class="text-xs text-amber-400">&lt;ol&gt;</code>) papaltan mo lng yung nasa gitna ng &lt;_&gt  -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-slate-800">
+          
+          <!-- Protocol Steps & Agent Guidelines -->
+          <div class="bg-slate-900/60 p-6 rounded-3xl border border-slate-800 space-y-6">
+            <div>
+              <h3 class="text-xl font-display tracking-wider text-white mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-list-ol text-red-500 text-sm"></i> Protocol Steps 
+              </h3>
+              <ol class="list-decimal list-inside text-xs text-slate-300 space-y-2">
+                <li>Register your agent clearance code through the entry portal.</li>
+                <li>Deposit funds into your secure S.H.I.E.L.D. wallet balance.</li>
+                <li>Select a preferred armory crate tier to decrypt.</li>
+                <li>Claim and dispatch your unlocked gear directly to your coordinates.</li>
+              </ol>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-display tracking-wider text-white mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-shield text-blue-500 text-sm"></i> Agent Guidelines
+              </h3>
+              <ul class="list-disc list-inside text-xs text-slate-300 space-y-2">
+                <li>Maintain strict confidentiality of all unboxed tech.</li>
+                <li>Do not expose Asgardian relics to open moisture or direct sunlight.</li>
+                <li>Report any unauthorized Wakandan frequency anomalies immediately.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Terminal Logs & Tech Glossary -->
+          <div class="bg-slate-900/60 p-6 rounded-3xl border border-slate-800 space-y-6">
+            <div>
+              <h3 class="text-xl font-display tracking-wider text-white mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-terminal text-green-500 text-sm"></i> Encrypted Logs 
+              </h3>
+              <pre class="bg-slate-950 p-3 rounded-xl text-[10px] text-green-400 font-mono border border-slate-800 overflow-x-auto"><code>[S.H.I.E.L.D. SECURE_SYS]
+STATUS: ONLINE
+GRID: STARK_TOWER_01
+SEC_LEVEL: ALPHA-9
+READY FOR DECRYPTION...</code></pre>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-display tracking-wider text-white mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-book text-amber-500 text-sm"></i> Stark Glossary 
+              </h3>
+              <dl class="text-xs space-y-2 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                <div>
+                  <dt class="font-bold text-red-400">Vibranium</dt>
+                  <dd class="text-slate-400 text-[11px]">Rare metal with supreme kinetic energy absorption properties.</dd>
+                </div>
+                <div>
+                  <dt class="font-bold text-amber-400">Arc Reactor</dt>
+                  <dd class="text-slate-400 text-[11px]">Palladium-core clean energy source powering high-tier suits.</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Feature Highlights Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-red-950/60 border border-red-500/30 flex items-center justify-center text-red-400">
+              <i class="fa-solid fa-atom text-lg"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white">Quantum Encryption</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Every crate decrypt process utilizes JARVIS-verified quantum randomization routines ensuring 100% provably fair drop rates.
+            </p>
+          </div>
+
+          <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-950/60 border border-amber-500/30 flex items-center justify-center text-amber-400">
+              <i class="fa-solid fa-jet-fighter text-lg"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white">Global Express Logistics</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Equipped with Quinjet delivery integration, claimed gear is packaged and dispatched directly to your local coordinates within days.
+            </p>
+          </div>
+
+          <div class="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-sky-950/60 border border-sky-500/30 flex items-center justify-center text-sky-400">
+              <i class="fa-solid fa-shield-virus text-lg"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white">Authentic Hero Grade</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              From Vibranium weave armor to Asgardian forged relics, every item is certified authentic by Stark Armory clearance protocols.
+            </p>
+          </div>
+        </div>
+
+        <!-- Stat Counter Bar -->
+        <div class="bg-gradient-to-r from-slate-900 via-red-950/20 to-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div>
+            <div class="text-2xl sm:text-3xl font-display text-amber-400">100,000+</div>
+            <div class="text-xs text-slate-400 mt-1 uppercase font-semibold">Crates Decrypted</div>
+          </div>
+          <div>
+            <div class="text-2xl sm:text-3xl font-display text-red-500">24/7</div>
+            <div class="text-xs text-slate-400 mt-1 uppercase font-semibold">S.H.I.E.L.D. Monitoring</div>
+          </div>
+          <div>
+            <div class="text-2xl sm:text-3xl font-display text-sky-400">100%</div>
+            <div class="text-xs text-slate-400 mt-1 uppercase font-semibold">Provably Fair</div>
+          </div>
+          <div>
+            <div class="text-2xl sm:text-3xl font-display text-emerald-400">4.9/5</div>
+            <div class="text-xs text-slate-400 mt-1 uppercase font-semibold">Agent Satisfaction</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- S.H.I.E.L.D SUPPORT SECTION -->
+      <section id="section-support-content" class="space-y-8 hidden">
+        <div>
+          <h2 class="text-4xl font-display tracking-wider text-white">S.H.I.E.L.D. Support Desk</h2>
+          <p class="text-slate-400 text-xs mt-1">
+            Having trouble with crate decryption or delivery? Send a dispatch to Stark Industries agent team.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <form onsubmit="handleSupportSubmit(event)" class="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Agent Name</label>
+              <input type="text" required placeholder="e.g. Tony Stark" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Clearance ID / Email</label>
+              <input type="email" required placeholder="agent@shield.gov" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Issue Description</label>
+              <textarea rows="4" required placeholder="Describe your unboxing or item issue..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500"></textarea>
+            </div>
+
+            <!-- Mission Evidence File Upload (Topic: upload / <input type="file">) pede mo idagdag (<code class="text-amber-400">&lt;input type="file"&gt;</code>)-->
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-300 uppercase">
+                Upload Mission Evidence
+              </label>
+              <input type="file" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-red-600 file:text-white hover:file:bg-red-500 cursor-pointer bg-slate-950 border border-slate-800 rounded-xl" />
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-red-600 hover:bg-red-500 transition-all shadow-lg shadow-red-600/30">
+              Transmit Dispatch
+            </button>
+          </form>
+
+          <div class="space-y-4">
+            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+              <h4 class="text-sm font-bold text-amber-400 flex items-center gap-2">
+                <i class="fa-solid fa-circle-question"></i> How are drop rates determined?
+              </h4>
+              <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                All drops are governed by provably fair quantum algorithms verified by JARVIS subroutines.
+              </p>
+            </div>
+            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800">
+              <h4 class="text-sm font-bold text-amber-400 flex items-center gap-2">
+                <i class="fa-solid fa-truck-fast"></i> How does physical item shipping work?
+              </h4>
+              <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                Items collected in your inventory are dispatched straight from Wakandan/Stark logistics within 3-5 operational days.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multimedia & Communications Hub (Topics: <video>, <audio>, <iframe>) you can add (<code class="text-xs text-amber-400">&lt;(video,audio,iframe)&gt;</code>) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+          
+          <!-- 1. Video Element (<video>) -->
+          <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800 space-y-3">
+            <h3 class="text-lg font-display tracking-wider text-white flex items-center gap-2">
+              <i class="fa-solid fa-video text-red-500 text-xs"></i> Security Briefing 
+            </h3>
+            <p class="text-xs text-slate-400">Watch standard issue decryption instructions.</p>
+            <div class="rounded-xl overflow-hidden border border-slate-800 bg-slate-950 aspect-video flex items-center justify-center">
+              <video controls class="w-full h-full object-cover">
+                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+
+          <!-- 2. Audio Element (<audio>) -->
+          <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800 space-y-3">
+            <h3 class="text-lg font-display tracking-wider text-white flex items-center gap-2">
+              <i class="fa-solid fa-microphone-lines text-amber-500 text-xs"></i> Radio Frequency
+            </h3>
+            <p class="text-xs text-slate-400">Listen to emergency broadcast transmissions.</p>
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col justify-center items-center space-y-3">
+              <i class="fa-solid fa-wave-square text-amber-400 text-2xl animate-pulse"></i>
+              <audio controls class="w-full h-8">
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+          </div>
+
+          <!-- 3. Iframe Element (<iframe>) -->
+          <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-800 space-y-3">
+            <h3 class="text-lg font-display tracking-wider text-white flex items-center gap-2">
+              <i class="fa-solid fa-map-location-dot text-blue-500 text-xs"></i> Compound Map
+            </h3>
+            <p class="text-xs text-slate-400">Locate regional S.H.I.E.L.D. facility coordinates.</p>
+            <div class="rounded-xl overflow-hidden border border-slate-800 bg-slate-950 aspect-video">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387190.2799160891!2d-74.25987568486931!3d40.69767006788206!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sph!4v1650000000000!5m2!1sen!2sph" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy">
+              </iframe>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- TOP UP / PAYMENT MODAL -->
+    <div id="topup-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+      <div id="topup-modal-container" class="bg-slate-900 max-w-md w-full rounded-3xl p-6 sm:p-8 border border-green-500/30 text-left relative transform scale-95 transition-transform duration-300 shadow-2xl">
+        <button onclick="closeTopUpModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-xl bg-green-950/80 border border-green-500/40 flex items-center justify-center text-green-400 text-lg">
+            <i class="fa-solid fa-wallet"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-display tracking-wider text-white">Deposit Funds</h3>
+            <p class="text-xs text-slate-400">Select payment method and amount</p>
+          </div>
+        </div>
+
+        <form onsubmit="handleTopUpSubmit(event)" class="space-y-5">
+          <!-- Preset Amounts -->
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Select Amount</label>
+            <div class="grid grid-cols-4 gap-2">
+              <button type="button" onclick="selectPresetAmount(20)" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-green-500 rounded-xl text-xs font-bold text-white transition-all">$20</button>
+              <button type="button" onclick="selectPresetAmount(50)" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-green-500 rounded-xl text-xs font-bold text-white transition-all">$50</button>
+              <button type="button" onclick="selectPresetAmount(100)" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-green-500 rounded-xl text-xs font-bold text-white transition-all">$100</button>
+              <button type="button" onclick="selectPresetAmount(200)" class="py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-green-500 rounded-xl text-xs font-bold text-white transition-all">$200</button>
+            </div>
+          </div>
+
+          <!-- Custom Amount Input -->
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Or Enter Amount ($)</label>
+            <input type="number" id="topup-amount-input" step="0.01" min="1" required placeholder="50.00" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-green-500" />
+          </div>
+
+          <!-- Payment Methods -->
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Payment Method</label>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer hover:border-green-500/50 transition-all">
+                <input type="radio" name="pay-method" value="gcash" checked class="accent-green-500" />
+                <span class="text-xs font-semibold text-slate-200">GCash</span>
+              </label>
+              <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer hover:border-green-500/50 transition-all">
+                <input type="radio" name="pay-method" value="maya" class="accent-green-500" />
+                <span class="text-xs font-semibold text-slate-200">Maya</span>
+              </label>
+              <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer hover:border-green-500/50 transition-all">
+                <input type="radio" name="pay-method" value="card" class="accent-green-500" />
+                <span class="text-xs font-semibold text-slate-200">Credit / Debit</span>
+              </label>
+              <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer hover:border-green-500/50 transition-all">
+                <input type="radio" name="pay-method" value="bank" class="accent-green-500" />
+                <span class="text-xs font-semibold text-slate-200">Bank Transfer</span>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-green-600 hover:bg-green-500 transition-all shadow-lg shadow-green-600/30">
+            Confirm Deposit
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ACCOUNT / AUTH MODAL -->
+    <div id="account-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+      <div id="account-modal-container" class="bg-slate-900 max-w-lg w-full rounded-3xl p-6 sm:p-8 border border-red-500/30 text-left relative transform scale-95 transition-transform duration-300 shadow-2xl max-h-[90vh] overflow-y-auto">
+        <button onclick="closeAccountModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <!-- Auth Navigation Tabs -->
+        <div class="flex border-b border-slate-800 pb-4 mb-6 gap-4">
+          <button id="auth-tab-signin" onclick="switchAuthTab('signin')" class="text-sm font-bold uppercase tracking-wider text-red-500 pb-1 border-b-2 border-red-500 transition-all">
+            Sign In
+          </button>
+          <button id="auth-tab-signup" onclick="switchAuthTab('signup')" class="text-sm font-bold uppercase tracking-wider text-slate-400 hover:text-white pb-1 border-b-2 border-transparent transition-all">
+            Sign Up
+          </button>
+          <button id="auth-tab-profile" onclick="switchAuthTab('profile')" class="text-sm font-bold uppercase tracking-wider text-slate-400 hover:text-white pb-1 border-b-2 border-transparent transition-all hidden">
+            Agent Profile
+          </button>
+        </div>
+
+        <!-- 1. SIGN IN FORM -->
+        <form id="auth-signin-form" onsubmit="handleSignIn(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Clearance Email</label>
+            <input type="email" id="signin-email" required placeholder="agent@shield.gov" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Access Code / Password</label>
+            <input type="password" id="signin-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500" />
+          </div>
+          <button type="submit" class="w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-red-600 hover:bg-red-500 transition-all shadow-lg shadow-red-600/30">
+            Sign In
+          </button>
+          <p class="text-center text-xs text-slate-400">
+            Don't have clearance yet? <a href="#" onclick="switchAuthTab('signup')" class="text-amber-400 hover:underline font-semibold">Sign Up here</a>
+          </p>
+        </form>
+
+        <!-- 2. SIGN UP FORM (Updated with Address input) -->
+        <form id="auth-signup-form" onsubmit="handleSignUp(event)" class="space-y-4 hidden">
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Agent Name</label>
+            <input type="text" id="signup-name" required placeholder="e.g. Tony Stark" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Clearance Email</label>
+            <input type="email" id="signup-email" required placeholder="agent@shield.gov" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Access Code / Password</label>
+            <input type="password" id="signup-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Delivery Address (Location)</label>
+            <input type="text" id="signup-address" required placeholder="Stark Tower, 5th Avenue, NY" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-red-500" />
+          </div>
+          <button type="submit" class="w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-red-600 hover:bg-red-500 transition-all shadow-lg shadow-red-600/30">
+            Register Agent Account
+          </button>
+          <p class="text-center text-xs text-slate-400">
+            Already registered? <a href="#" onclick="switchAuthTab('signin')" class="text-amber-400 hover:underline font-semibold">Sign In here</a>
+          </p>
+        </form>
+
+        <!-- 3. PROFILE VIEW (Updated with Avatar Changer, Address, & Inventory Picker) -->
+        <div id="auth-profile-view" class="space-y-5 hidden">
+          <div class="flex items-center gap-4 border-b border-slate-800 pb-4">
+            <div id="profile-avatar-wrapper" class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center text-white text-2xl font-bold shadow-md overflow-hidden relative border border-amber-400/40">
+              <img id="profile-avatar-img" src="" alt="Avatar" class="w-full h-full object-cover hidden" />
+              <i id="profile-avatar-icon" class="fa-solid fa-user-shield"></i>
+            </div>
+            <div class="flex-grow">
+              <h3 id="profile-agent-name" class="text-xl font-display tracking-wider text-white">Agent Name</h3>
+              <p id="profile-agent-email" class="text-xs text-slate-400">agent@shield.gov</p>
+            </div>
+          </div>
+
+          <!-- Change Profile Photo & Address Settings -->
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+            <h4 class="text-xs font-bold uppercase text-amber-400">Agent Settings & Delivery Location</h4>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Profile Photo (Image URL)</label>
+              <input type="text" id="update-avatar-url" placeholder="https://example.com/avatar.jpg" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Delivery Address</label>
+              <input type="text" id="update-address" placeholder="Enter delivery location address..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500" />
+            </div>
+            <button onclick="handleUpdateProfileSettings()" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase tracking-wider transition-all">
+              Save Profile Changes
+            </button>
+          </div>
+
+          <!-- Special Dispatch Notes & PDF Dossier (Topics: <textarea>, <objectpdf>) -->
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4">
+            
+            <!-- 1. Textarea for Delivery Notes -->
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-300 uppercase flex items-center justify-between">
+                <span>Special Dispatch Notes (<code class="text-amber-400">&lt;textarea&gt;</code>)</span>
+                <span class="text-[10px] text-slate-500 font-normal">Instructions for Quinjet Pilot</span>
+              </label>
+              <textarea id="profile-dispatch-notes" rows="2" placeholder="e.g., Leave package near the garage entrance..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500"></textarea>
+            </div>
+
+            <!-- 2. Object PDF Dossier Viewer -->
+            <div class="space-y-2 pt-2 border-t border-slate-800">
+              <label class="block text-xs font-bold text-slate-300 uppercase flex items-center justify-between">
+                <span>Classified Clearance Dossier (<code class="text-amber-400">&lt;object&gt;</code>)</span>
+                <span class="text-[10px] text-amber-400 font-normal">PDF Viewer</span>
+              </label>
+              <div class="w-full h-36 rounded-xl overflow-hidden border border-slate-800 bg-slate-900 flex items-center justify-center">
+                <object data="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" type="application/pdf" width="100%" height="100%">
+                  <p class="text-[11px] text-slate-400 p-4 text-center">
+                    Your browser does not support embedded PDFs. <a href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" target="_blank" class="text-amber-400 underline">Download Dossier PDF</a>
+                  </p>
+                </object>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="flex items-center justify-between bg-slate-950 p-4 rounded-2xl border border-slate-800">
+            <div>
+              <span class="block text-xs text-slate-400">Available Balance</span>
+              <span id="profile-balance" class="text-lg font-bold text-amber-400">$500.00</span>
+            </div>
+            <button onclick="openTopUpModal()" class="px-4 py-2 rounded-xl bg-green-600 hover:bg-green-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-green-600/30 flex items-center gap-1.5">
+              <i class="fa-solid fa-wallet"></i> Top Up
+            </button>
+          </div>
+
+          <!-- Claimed Inventory & Delivery Dispatch Selection -->
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-3">
+            <h4 class="text-xs font-bold uppercase text-slate-300">Claimed Armory Inventory & Priority Delivery</h4>
+            <p class="text-[11px] text-slate-400">Select an item from your claimed inventory to schedule for priority delivery to your saved address.</p>
+            
+            <div id="account-inventory-list" class="space-y-2 max-h-36 overflow-y-auto pr-1">
+              <p class="text-xs text-slate-500 italic">No items unboxed yet.</p>
+            </div>
+
+            <div id="delivery-dispatch-section" class="pt-2 border-t border-slate-800 hidden">
+              <div class="flex items-center justify-between text-xs mb-2">
+                <span class="text-slate-400 font-semibold">Selected for Delivery:</span>
+                <span id="selected-delivery-item-name" class="text-amber-400 font-bold">None</span>
+              </div>
+              <button onclick="dispatchPriorityDelivery()" class="w-full py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-red-600 hover:bg-red-500 transition-all shadow-md shadow-red-600/30 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-truck-fast"></i> Ship Selected Item First
+              </button>
+            </div>
+          </div>
+
+          <div class="flex gap-3 pt-2">
+            <button onclick="handleSignOut()" class="flex-1 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-red-400 bg-red-950/40 hover:bg-red-900/50 border border-red-500/30 transition-all">
+              Sign Out
+            </button>
+            <button onclick="closeAccountModal()" class="flex-1 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-slate-300 bg-slate-800 hover:bg-slate-700 transition-all">
+              Close
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Unbox Modal -->
+    <div id="unbox-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+      <div id="modal-container" class="bg-slate-900 max-w-md w-full rounded-3xl p-8 border border-red-500/30 text-center relative transform scale-95 transition-transform duration-300 shadow-2xl shadow-red-950/50">
+        <button onclick="closeUnboxModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <!-- Unboxing Stage 1: Animation -->
+        <div id="unbox-animation-stage" class="space-y-6">
+          <h3 class="text-2xl font-display tracking-wider text-white">Decrypting Avengers Crate...</h3>
+          <div class="py-8 flex items-center justify-center">
+            <div id="modal-box-visual" class="w-36 h-36 rounded-3xl bg-slate-950 border-2 border-red-500/50 flex items-center justify-center overflow-hidden shadow-2xl shadow-red-600/30">
+              <img id="modal-box-image" src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=500&auto=format&fit=crop" alt="Crate Image" class="w-full h-full object-cover" />
+            </div>
+          </div>
+          <p class="text-xs text-red-400 font-mono animate-pulse">
+            Accessing Stark Satellite Network...
+          </p>
+        </div>
+
+        <!-- Unboxing Stage 2: Result -->
+        <div id="unbox-result-stage" class="space-y-6 hidden">
+          <span id="result-rarity-badge" class="px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest">
+            Legendary
+          </span>
+
+          <div class="py-2 flex items-center justify-center">
+            <div class="w-44 h-44 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center relative shadow-2xl overflow-hidden group">
+              <img id="result-item-image" src="" alt="" class="w-full h-full object-cover hidden" />
+              <i id="result-item-icon" class="fa-solid fa-shield-halved text-amber-400 text-5xl"></i>
+            </div>
+          </div>
+
+          <div>
+            <h3 id="result-item-name" class="text-xl font-bold text-white">Item Name</h3>
+            <p class="text-xs text-slate-400 mt-1">
+              Estimated Value: <span id="result-item-value" class="text-amber-400 font-bold">$0.00</span>
+            </p>
+          </div>
+
+          <div class="flex gap-3 pt-2">
+            <button onclick="reOpenCurrentBox()" class="flex-1 py-3 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-red-600 hover:bg-red-500 transition-all shadow-lg shadow-red-600/30">
+              Open Again
+            </button>
+            <button onclick="closeUnboxModal()" class="flex-1 py-3 rounded-xl font-bold text-xs uppercase tracking-wider text-slate-300 bg-slate-800 hover:bg-slate-700 transition-all">
+              Claim Item
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-8 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+        <p class="text-xs text-slate-500">
+          &copy; 2026 Stark Industries & Avengers Vault.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Custom Script File -->
+    <script src="main.js"></script>
+  </body>
+</html>

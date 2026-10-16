@@ -1,0 +1,78 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avengers Vault — Assemble Your Gear</title>
+
+  <!-- External Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            avengers: {
+              red: "#e23636",
+              gold: "#f59e0b",
+              blue: "#0284c7",
+              dark: "#0b0f19",
+            },
+            rarity: {
+              common: "#9ca3af",
+              rare: "#3b82f6",
+              epic: "#a855f7",
+              legendary: "#f59e0b",
+              mythic: "#ec4899",
+            },
+          },
+          fontFamily: {
+            sans: ["Space Grotesk", "sans-serif"],
+            display: ["Bebas Neue", "sans-serif"],
+          },
+          animation: {
+            "pulse-glow": "pulseGlow 3s ease-in-out infinite",
+            shake: "shake 0.5s cubic-bezier(.36,.07,.19,.97) infinite",
+            float: "float 4s ease-in-out infinite",
+            ticker: "ticker 30s linear infinite",
+          },
+          keyframes: {
+            pulseGlow: {
+              "0%, 100%": { opacity: "0.4", transform: "scale(1)" },
+              "50%": { opacity: "0.8", transform: "scale(1.08)" },
+            },
+            shake: {
+              "10%, 90%": { transform: "translate3d(-2px, 0, 0) rotate(-2deg)" },
+              "20%, 80%": { transform: "translate3d(3px, 0, 0) rotate(3deg)" },
+              "30%, 50%, 70%": { transform: "translate3d(-5px, 0, 0) rotate(-4deg)" },
+              "40%, 60%": { transform: "translate3d(5px, 0, 0) rotate(4deg)" },
+            },
+            float: {
+              "0%, 100%": { transform: "translateY(0px)" },
+              "50%": { transform: "translateY(-12px)" },
+            },
+            ticker: {
+              "0%": { transform: "translateX(0)" },
+              "100%": { transform: "translateX(-50%)" },
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="main.css" />
+</head>

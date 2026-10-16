@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mystery Vault - Entry Gate</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <aside class="side-banner banner-left">
+      <div class="banner-overlay"></div>
+      <div class="banner-content">
+        <span class="hero-badge">AVENGERS INITIATIVE</span>
+        <h2 class="hero-title">ASSEMBLE</h2>
+        <p class="hero-desc">
+          Are you worthy to unlock the ancient tech of the heroes?
+        </p>
+      </div>
+
+      <div class="hero-card hero-cap">
+        <div class="hero-icon">🛡️</div>
+        <div class="hero-info">
+          <h4>CAPTAIN AMERICA</h4>
+          <span>Vibranium Shield Active</span>
+        </div>
+      </div>
+
+      <div class="hero-card hero-thor">
+        <div class="hero-icon">⚡</div>
+        <div class="hero-info">
+          <h4>THOR ODINSON</h4>
+          <span>God of Thunder</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="enter-card">
+      <div class="vault-glow"></div>
+
+      <div class="enter-header">
+        <div class="avengers-logo">A</div>
+        <h1>MYSTERY VAULT</h1>
+        <p>Register your account to proceed</p>
+      </div>
+
+      <form id="enterForm" action="mystery-vault.html" method="GET" novalidate>
+        <div class="form-group">
+          <label for="username">Username / Agent Alias</label>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="form-control"
+              placeholder="Enter your alias..."
+              required
+              autocomplete="off"
+            />
+            <span class="input-focus-border"></span>
+          </div>
+          <div class="error-message" id="usernameError">
+            Please enter a valid agent username.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Select Your Hero Avatar</label>
+          <div class="avatar-selection" id="avatarPicker">
+            <div
+              class="avatar-option selected"
+              data-avatar="🦾"
+              data-hero="Iron Man"
+            >
+              <span class="avatar-emoji">🦾</span>
+              <span class="hero-label">Iron Man</span>
+            </div>
+            <div
+              class="avatar-option"
+              data-avatar="🛡️"
+              data-hero="Captain America"
+            >
+              <span class="avatar-emoji">🛡️</span>
+              <span class="hero-label">Cap</span>
+            </div>
+            <div class="avatar-option" data-avatar="⚡" data-hero="Thor">
+              <span class="avatar-emoji">⚡</span>
+              <span class="hero-label">Thor</span>
+            </div>
+            <div class="avatar-option" data-avatar="🧪" data-hero="Hulk">
+              <span class="avatar-emoji">🧪</span>
+              <span class="hero-label">Hulk</span>
+            </div>
+            <div class="avatar-option" data-avatar="🕷️" data-hero="Spider-Man">
+              <span class="avatar-emoji">🕷️</span>
+              <span class="hero-label">Spidey</span>
+            </div>
+          </div>
+
+          <input
+            type="hidden"
+            id="selectedAvatarInput"
+            name="avatar"
+            value="🦾"
+          />
+        </div>
+
+        <button type="submit" class="btn-enter">
+          <span>ENTER VAULT</span>
+          <div class="btn-glare"></div>
+        </button>
+      </form>
+    </main>
+
+    <aside class="side-banner banner-right">
+      <div class="banner-overlay"></div>
+      <div class="banner-content">
+        <span class="hero-badge">STARK SECURITY</span>
+        <h2 class="hero-title">RESTRICTED</h2>
+        <p class="hero-desc">Authorized personnel only beyond this gateway.</p>
+      </div>
+
+      <div class="hero-card hero-ironman">
+        <div class="hero-icon">🦾</div>
+        <div class="hero-info">
+          <h4>IRON MAN</h4>
+          <span>Arc Reactor Online</span>
+        </div>
+      </div>
+
+      <div class="hero-card hero-spidey">
+        <div class="hero-icon">🕷️</div>
+        <div class="hero-info">
+          <h4>SPIDER-MAN</h4>
+          <span>Peter Parker Protocols</span>
+        </div>
+      </div>
+    </aside>
+
+    <script src="script.js"></script>
+  </body>
+</html>

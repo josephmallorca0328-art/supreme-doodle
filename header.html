@@ -1,0 +1,82 @@
+<header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-red-900/40">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    
+    <!-- Logo -->
+    <div class="flex items-center gap-3 cursor-pointer" onclick="switchNav('home')">
+      <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-red-600/40 font-display text-2xl tracking-widest border border-amber-400/40">
+        A
+      </div>
+      <span class="text-2xl font-display tracking-wider text-white">
+        AVENGERS<span class="text-red-500">VAULT</span>
+      </span>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide">
+      <button onclick="switchNav('home')" id="nav-home" class="nav-link text-red-500 transition-colors flex items-center gap-2">
+        <i class="fa-solid fa-house text-xs"></i> Home
+      </button>
+      <button onclick="switchNav('about')" id="nav-about" class="nav-link text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+        <i class="fa-solid fa-shield-halved text-xs"></i> About Us
+      </button>
+      <button onclick="switchNav('support')" id="nav-support" class="nav-link text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+        <i class="fa-solid fa-headset text-xs"></i> S.H.I.E.L.D Support
+      </button>
+    </nav>
+
+    <!-- Right Side Controls (SFX, Balance, Top Up, Account) -->
+    <div class="flex items-center gap-3 sm:gap-4">
+      <button
+        id="sound-toggle"
+        onclick="toggleSound()"
+        class="px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900/70 hover:bg-slate-800 text-xs text-slate-300 flex items-center gap-2 transition-all"
+      >
+        <i id="sound-icon" class="fa-solid fa-volume-high text-red-500"></i>
+        <span class="hidden sm:inline">SFX On</span>
+      </button>
+
+      <!-- Balance Display & Top-Up Button -->
+      <div class="flex items-center gap-2">
+        <div class="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-800">
+          <i class="fa-solid fa-shield-halved text-amber-400 text-xs"></i>
+          <span class="text-xs text-slate-400">Balance:</span>
+          <span class="text-xs font-bold text-amber-400" id="user-balance-display">$500.00</span>
+        </div>
+        <button
+          onclick="openTopUpModal()"
+          class="px-3 py-1.5 rounded-xl bg-green-600 hover:bg-green-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-green-600/30 flex items-center gap-1.5"
+        >
+          <i class="fa-solid fa-plus text-[10px]"></i>
+          <span>Top Up</span>
+        </button>
+      </div>
+
+      <!-- Account Trigger Button -->
+      <button
+        onclick="openAccountModal()"
+        class="px-3.5 py-1.5 rounded-xl border border-red-500/40 bg-red-950/30 hover:bg-red-900/50 text-xs font-bold text-white flex items-center gap-2 transition-all shadow-md shadow-red-950/50"
+      >
+        <div id="nav-avatar-container" class="w-6 h-6 rounded-full overflow-hidden bg-red-900 flex items-center justify-center border border-red-400">
+          <img id="nav-avatar-img" src="" alt="Avatar" class="w-full h-full object-cover hidden" />
+          <i id="nav-avatar-icon" class="fa-solid fa-user-astronaut text-[10px] text-red-300"></i>
+        </div>
+        <span id="nav-account-label">Agent Stark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Live Unboxing Ticker Banner -->
+<div class="bg-slate-950 border-b border-slate-800 py-2.5 overflow-hidden relative">
+  <div class="max-w-7xl mx-auto px-4 flex items-center gap-3">
+    <span class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-red-400 bg-red-950/50 px-2.5 py-1 rounded-md border border-red-500/30 whitespace-nowrap z-10">
+      <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+      Live Intel Drop
+    </span>
+    <div class="overflow-hidden w-full relative">
+      <div id="live-ticker-content" class="inline-flex gap-6 whitespace-nowrap animate-ticker text-xs text-slate-400">
+        <!-- Dynamically populated via JS -->
+      </div>
+    </div>
+  </div>
+</div>
